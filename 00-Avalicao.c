@@ -7,7 +7,11 @@ a) Insira um novo restaurante na lista;
 b) Liste todos os restaurantes na tela;
 e) Liste os restaurantes em ordem decrescente do melhor para o pior. 5 ao 0
 f) Liste todos os restaurantes com determinado tipo de comida, determinado pelo usuário.
-Autor: Luis Felipe Francisco Fermino Ferreira - 23/11/22.
+extra: 
+ordem alfabetica - ok
+alterar - 
+excluir - 
+Autor: Luis Felipe Francisco Fermino Ferreira - 26/11/22.
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +31,7 @@ void insert(Cadrestaurants **head);
 void list(Cadrestaurants *head);
 void listrating(Cadrestaurants *head);
 void listtype(Cadrestaurants *head);
+void listalpha(Cadrestaurants *head);
 
 int main(){
         system("cls");
@@ -40,19 +45,21 @@ int main(){
         printf("1 - Cadastrar novo restaurante.\n");
         printf("2 - Listar restaurantes cadastradros.\n");
         printf("3 - Listar por estrelas.\n");
-        printf("4 - Listar por tipo de culinaria.\n");
-        printf("5 - Sair.\n");
+        printf("4 - Listar em ordem alfabetica.\n");
+        printf("5 - Listar por tipo de culinaria.\n");
+        printf("6 - Sair.\n");
         scanf("%d", &op);
         switch(op){
             case 1: insert(&head); break;
             case 2: list(head); break;
             case 3: listrating(head); break;
-            case 4: listtype(head); break;
-            case 5: break;
+            case 4: listalpha(head); break;
+            case 5: listtype(head); break;
+            case 6: break;
             default: printf("Opcao invalida!\n");
         }
         fflush(stdin);
-    }while(op != 5);
+    }while(op != 6);
     newcad = head;
     while(newcad != NULL){
         head = newcad->next;
@@ -149,6 +156,68 @@ void listtype(Cadrestaurants *head){
             printf("\n--------------------------------------------------\n");
         }
         newcad = newcad->next;
+    }
+    system("pause");
+    system("cls");
+}
+//listing by alphabetical order
+void listalpha(Cadrestaurants *head){
+    //linpar console
+    system("cls");
+    //variavel auxiliar
+    Cadrestaurants *aux = head;
+    //variavel para armazenar o nome do restaurante
+    char name[20];
+    //variavel para armazenar o endereço do restaurante
+    char adress[50];
+    //variavel para armazenar o tipo de comida
+    char food[20];
+    //variavel para armazenar a nota do restaurante
+    int note;
+    //variavel para armazenar o proximo restaurante
+    Cadrestaurants *next;
+    //loop para percorrer a lista
+    while(aux!=NULL){
+        next = aux->next;
+        //loop para percorrer a lista
+        while(next!=NULL){
+            //condicional para ordenar por nome
+            if(strcmp(aux->name, next->name)>0){
+                //atribuição dos valores
+                strcpy(name, aux->name);
+                strcpy(adress, aux->address);
+                strcpy(food, aux->type);
+                note = aux->rating;
+                //atribuição dos valores
+                strcpy(aux->name, next->name);
+                strcpy(aux->address, next->address);
+                strcpy(aux->type, next->type);
+                aux->rating = next->rating;
+                //atribuição dos valores
+                strcpy(next->name, name);
+                strcpy(next->address, adress);
+                strcpy(next->type, food);
+                next->rating = note;
+            }
+            //atribuição do proximo restaurante
+            next = next->next;
+        }
+        //atribuição do proximo restaurante
+        aux = aux->next;
+    }
+    //variavel auxiliar
+    aux = head;
+    //loop para percorrer a lista
+    while(aux!=NULL){
+        //impressão dos dados
+        printf("--------------------------------------------------\n");
+        printf("Nome: %s", aux->name);
+        printf("End.: %s", aux->address);
+        printf("Culinaria: %s", aux->type);
+        printf("Estrelas: %d", aux->rating);
+        printf("\n--------------------------------------------------\n");
+        //atribuição do proximo restaurante
+        aux = aux->next;
     }
     system("pause");
     system("cls");
