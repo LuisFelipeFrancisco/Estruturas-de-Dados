@@ -9,9 +9,9 @@ e) Liste os restaurantes em ordem decrescente do melhor para o pior. 5 ao 0
 f) Liste todos os restaurantes com determinado tipo de comida, determinado pelo usuário.
 extra: 
 ordem alfabetica - ok
-alterar - 
+alterar - ok
 excluir - 
-Autor: Luis Felipe Francisco Fermino Ferreira - 26/11/22.
+Autor: Luis Felipe Francisco Fermino Ferreira - 23/11/22.
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,6 +32,8 @@ void list(Cadrestaurants *head);
 void listrating(Cadrestaurants *head);
 void listtype(Cadrestaurants *head);
 void listalpha(Cadrestaurants *head);
+void change(Cadrestaurants *head);
+void delete(Cadrestaurants **head);
 
 int main(){
         system("cls");
@@ -45,21 +47,25 @@ int main(){
         printf("1 - Cadastrar novo restaurante.\n");
         printf("2 - Listar restaurantes cadastradros.\n");
         printf("3 - Listar por estrelas.\n");
-        printf("4 - Listar em ordem alfabetica.\n");
-        printf("5 - Listar por tipo de culinaria.\n");
-        printf("6 - Sair.\n");
+        printf("4 - Listar por tipo de culinaria.\n");
+        printf("5 - Listar em ordem alfabetica.\n");
+        printf("6 - Alterar um cadastro.\n");
+        printf("7 - Excluir um cadastro.\n");
+        printf("8 - Sair.\n");
         scanf("%d", &op);
         switch(op){
             case 1: insert(&head); break;
             case 2: list(head); break;
             case 3: listrating(head); break;
-            case 4: listalpha(head); break;
-            case 5: listtype(head); break;
-            case 6: break;
+            case 4: listtype(head); break;
+            case 5: listalpha(head); break;
+            case 6: change(head); break;
+            case 7: break; //excluir
+            case 8: break;
             default: printf("Opcao invalida!\n");
         }
         fflush(stdin);
-    }while(op != 6);
+    }while(op != 8);
     newcad = head;
     while(newcad != NULL){
         head = newcad->next;
@@ -160,7 +166,7 @@ void listtype(Cadrestaurants *head){
     system("pause");
     system("cls");
 }
-//listing by alphabetical order
+//listing filtering by alphabetical order
 void listalpha(Cadrestaurants *head){
     //linpar console
     system("cls");
@@ -219,6 +225,53 @@ void listalpha(Cadrestaurants *head){
         //atribuição do proximo restaurante
         aux = aux->next;
     }
+    system("pause");
+    system("cls");
+}
+//Change a restaurant
+void change(Cadrestaurants *head){
+    system("cls");
+    Cadrestaurants *newcad;
+    char name[20];
+    int i;
+    printf("Nome do restaurante: ");
+    fflush(stdin);
+    fgets(name, 20, stdin);
+    newcad = head;
+    while(newcad != NULL){
+        if(strcmp(newcad->name, name) == 0){
+            printf("--------------------------------------------------\n");
+            printf("Nome: %s", newcad->name);
+            printf("End.: %s", newcad->address);
+            printf("Culinaria: %s", newcad->type);
+            printf("Estrelas: %d", newcad->rating);
+            printf("\n--------------------------------------------------\n");
+            printf("Novo nome: ");
+            fflush(stdin);
+            fgets(newcad->name, 20, stdin);
+            printf("Novo endereco: ");
+            fflush(stdin);
+            fgets(newcad->address, 50, stdin);
+            printf("Novo tipo de culinaria: ");
+            fflush(stdin);
+            fgets(newcad->type, 20, stdin);
+            do {
+                printf("Novas estrelas:\n");
+                printf("0 - Pessimo\n");
+                printf("1 - Ruim\n");
+                printf("2 - Medio\n");
+                printf("3 - Bom\n");
+                printf("4 - Otimo\n");
+                printf("5 - Excelente\n");
+                scanf("%d", &newcad->rating);
+            } while (newcad->rating < 0 || newcad->rating > 5);
+            system("pause");
+            system("cls");
+            return;
+        }
+        newcad = newcad->next;
+    }
+    printf("Restaurante nao encontrado!\n");
     system("pause");
     system("cls");
 }
