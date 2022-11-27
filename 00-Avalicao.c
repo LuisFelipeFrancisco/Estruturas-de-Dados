@@ -10,7 +10,7 @@ f) Liste todos os restaurantes com determinado tipo de comida, determinado pelo 
 extra: 
 ordem alfabetica - ok
 alterar - ok
-excluir - 
+excluir - ok
 Autor: Luis Felipe Francisco Fermino Ferreira - 23/11/22.
 */
 #include <stdio.h>
@@ -60,8 +60,11 @@ int main(){
             case 4: listtype(head); break;
             case 5: listalpha(head); break;
             case 6: change(head); break;
-            case 7: break; //excluir
-            case 8: break;
+            case 7: delete(&head); break;
+            case 8: 
+                printf("Saindo...\n");
+                Sleep(1000);
+                break;
             default: printf("Opcao invalida!\n");
         }
         fflush(stdin);
@@ -228,7 +231,7 @@ void listalpha(Cadrestaurants *head){
     system("pause");
     system("cls");
 }
-//Change a restaurant
+//Changing a restaurant
 void change(Cadrestaurants *head){
     system("cls");
     Cadrestaurants *newcad;
@@ -269,6 +272,41 @@ void change(Cadrestaurants *head){
             system("cls");
             return;
         }
+        newcad = newcad->next;
+    }
+    printf("Restaurante nao encontrado!\n");
+    system("pause");
+    system("cls");
+}
+
+//Delete a restaurant
+void delete(Cadrestaurants **head){
+    system("cls");
+    Cadrestaurants *newcad;
+    Cadrestaurants *aux;
+    char name[20];
+    printf("Nome do restaurante: ");
+    fflush(stdin);
+    fgets(name, 20, stdin);
+    newcad = *head;
+    if(strcmp(newcad->name, name) == 0){
+        *head = newcad->next;
+        free(newcad);
+        printf("Restaurante excluido com sucesso!\n");
+        system("pause");
+        system("cls");
+        return;
+    }
+    while(newcad != NULL){
+        if(strcmp(newcad->name, name) == 0){
+            aux->next = newcad->next;
+            free(newcad);
+            printf("Restaurante excluido com sucesso!\n");
+            system("pause");
+            system("cls");
+            return;
+        }
+        aux = newcad;
         newcad = newcad->next;
     }
     printf("Restaurante nao encontrado!\n");
